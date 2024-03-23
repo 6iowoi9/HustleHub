@@ -1,61 +1,167 @@
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import { registerUser } from '../utils/auth'; // Update with path to registerUser
+import { Button } from 'react-bootstrap';
+// import { useRouter } from 'next/router';
+import { useAuth } from '../utils/context/authContext';
+// import { getCategories } from '../api/categories';
+import { registerUser, updateUser } from '../api/user';
 
-function RegisterForm({ user, updateUser }) {
-  const [formData, setFormData] = useState({
-    bio: '',
-    uid: user.uid,
-    first_name: '',
-    last_name: '',
-    user_name: '',
-    contact_info: '',
-  });
+const initialState = {
+  bio: '',
+  first_name: '',
+  last_name: '',
+  image_url: '',
+  user_name: '',
+  contact_info: '',
+};
 
-  const handleSubmit = (e) => {
+function RegisterForm({ obj }) {
+  const [formInput, setFormInput] = useState(initialState);
+  // const [categories, setCategories] = useState([]);
+  const { user } = useAuth();
+  // const router = useRouter();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    registerUser(formData).then(() => updateUser(user.uid));
+
+    if (obj.firebaseKey) {
+      // If updating an existing post
+      const result = await updateUser({ ...formInput });
+      // Check if updateMember returned a valid result
+      if (result) {
+        window.location.href = '/'; // Redirect to the main page
+      } else {
+        console.error('updateMember did not return a valid result.');
+      }
+    } else {
+      // If creating a new post
+      const payload = { ...formInput, uid: user.uid };
+      const { name } = await registerUser(payload);
+
+      // Check if createMember returned a valid result
+      if (name) {
+        const patchPayload = { firebaseKey: name };
+        await updateUser(patchPayload);
+        window.location.href = '/'; // Redirect to the main page
+      } else {
+        console.error('createMember did not return a valid result.');
+      }
+    }
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formfirstname">
-        <Form.Label>First name</Form.Label>
-        <Form.Control as="textarea" name="firstName" required placeholder="Enter your First Name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-      </Form.Group>
+      <h2 className="text-white mt-5">{obj && obj.firebaseKey ? 'Update' : 'Create'} Post</h2>
 
-      <Form.Group className="mb-3" controlId="formlastname">
-        <Form.Label>Last Name</Form.Label>
-        <Form.Control as="textarea" name="lastName" required placeholder="Enter your last name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBio">
-        <Form.Label>User Name</Form.Label>
-        <Form.Control as="textarea" name="username" required placeholder="pick a username" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-      </Form.Group>
+      <FloatingLabel controlId="floatingInput-post_title" label=" First Name" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Enter your first name"
+          name="first_name"
+          value={formInput.first_name}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput-post_content" label="Last Name" className="mb-3">
+        <Form.Control
+          as="textarea"
+          placeholder="Enter content"
+          name="last_name"
+          value={formInput.post_content}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput-post_content" label=" Username" className="mb-3">
+        <Form.Control
+          as="textarea"
+          placeholder="Enter content"
+          name="user_name"
+          value={formInput.post_content}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput-post_content" label="About me " className="mb-3">
+        <Form.Control
+          as="textarea"
+          placeholder="Enter content"
+          name="bio"
+          value={formInput.post_content}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput-post_content" label="Contact info" className="mb-3">
+        <Form.Control
+          as="textarea"
+          placeholder="Enter content"
+          name="contact_info"
+          value={formInput.post_content}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
 
-      <Form.Group className="mb-3" controlId="formBio">
-        <Form.Label>bio</Form.Label>
-        <Form.Control as="textarea" name="bio" required placeholder="Enter your Bio" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBio">
-        <Form.Label>Contact Info</Form.Label>
-        <Form.Control as="textarea" name="contactinfo" required placeholder="Enter your email or social media link" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-      </Form.Group>
+      <FloatingLabel controlId="floatingInput-image_url" label="IMAGE URL" className="mb-3">
+        <Form.Control
+          type="url"
+          placeholder="Enter image URL"
+          name="image_url"
+          value={formInput.image_url}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
 
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      {/* <FloatingLabel controlId="floatingSelect" label="Category">
+        <Form.Select
+          aria-label="Category"
+          name="categories"
+          onChange={handleChange}
+          className="mb-3"
+          value={formInput.categories}
+          required
+        >
+          <option value="">Select a Category</option>
+          {categories.map(({ firebaseKey, Category }) => (
+            <option key={firebaseKey} value={firebaseKey}>
+              {Category}
+            </option>
+          ))}
+        </Form.Select>
+      </FloatingLabel> */}
+
+      <Button type="submit">{obj && obj.firebaseKey ? 'Update' : 'Create'} User</Button>
     </Form>
   );
 }
 
 RegisterForm.propTypes = {
-  user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-  }).isRequired,
-  updateUser: PropTypes.func.isRequired,
+  obj: PropTypes.shape({
+    image: PropTypes.string,
+    last_name: PropTypes.string,
+    firebaseKey: PropTypes.string,
+    first_name: PropTypes.string,
+    contact_info: PropTypes.string,
+    bio: PropTypes.string,
+    uid: PropTypes.string,
+    obj: PropTypes.string,
+    updateUser: PropTypes.number,
+  }),
+
+};
+
+RegisterForm.defaultProps = {
+  obj: initialState,
 };
 
 export default RegisterForm;

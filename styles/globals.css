@@ -18,5 +18,33 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  background-color: rgb(29,191,115);
+}
+
+#pfp{
+border-radius: 50%;
+width: 200px;
+border: black;
+border-style: solid;
+
+}
+#profile{
+  border-width: 5px;
+  justify-content: center;
+  display: flex;
+}
+#displayName{
+  text-align: center;
+}
+#pfpdisplayname{
+  margin-top: 65px;
+}
+#post_content{
+  width: 600px;
+  height: 100px;
+}
+#postauthor{
+  background-color: darkgreen;
+  border-color: black;
+
 }

@@ -1,27 +1,31 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { clientCredentials } from './client';
-
-const registerUser = (id) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/user`, {
-    method: 'POST',
-    body: JSON.stringify(id),
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  })
-    .then((resp) => resolve(resp.json()))
-    .catch(reject);
-});
 
 const signIn = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider);
+
+  // Sign in with Google popup
+  return firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      // Handle successful sign-in
+      const { user } = result;
+      console.log('Signed in user:', user);
+      // You can perform additional actions after successful sign-in if needed
+    })
+    .catch((error) => {
+      // Handle errors
+      console.error('Error signing in:', error);
+    });
 };
 
-const signOut = () => {
-  firebase.auth().signOut();
-};
-
-export { signIn, signOut, registerUser };
+const signOut = () => firebase.auth().signOut()
+  .then(() => {
+    // Handle successful sign-out
+    console.log('User signed out');
+    // You can perform additional actions after successful sign-out if needed
+  })
+  .catch((error) => {
+    // Handle errors
+    console.error('Error signing out:', error);
+  });
+export { signIn, signOut };

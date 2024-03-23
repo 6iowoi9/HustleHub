@@ -1,5 +1,3 @@
-// Context API Docs: https://beta.reactjs.org/learn/passing-data-deeply-with-context
-
 import React, {
   createContext,
   useContext,
@@ -11,7 +9,7 @@ import { firebase } from '../client';
 
 const AuthContext = createContext();
 
-AuthContext.displayName = 'AuthContext'; // Context object accepts a displayName string property. React DevTools uses this string to determine what to display for the context. https://reactjs.org/docs/context.html#contextdisplayname
+AuthContext.displayName = 'AuthContext'; // Context object accepts a displayName string property. React DevTools uses this string to determine what to display for the context.
 
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);

@@ -13,8 +13,8 @@ function Signin() {
         margin: '0 auto',
       }}
     >
-      <h1>Hi there!</h1>
-      <p>Click the button below to login!</p>
+      <h1>Welcome to <br />💰HustleHub💵!</h1>
+      <p>A freelance website</p>
       <Button type="button" size="lg" className="copy-btn" onClick={signIn}>
         Sign In
       </Button>
