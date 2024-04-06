@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { createComment, getSinglePost } from '../../api/postdata';
@@ -46,7 +47,7 @@ export default function ViewPost() {
     };
 
     fetchPostDetails();
-  }, [router.query]);
+  }, [getUserDetails, router.query]);
 
   const handleCommentSubmit = async () => {
     try {

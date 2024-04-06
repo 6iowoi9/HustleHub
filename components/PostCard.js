@@ -52,7 +52,6 @@ function PostCard({ postObj, onUpdate }) {
         const matchedUser = userData.find((user1) => user1.uid === postObj.uid);
         if (matchedUser) {
           setAuthorName(matchedUser.user_name);
-          console.log(authorName);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -60,7 +59,7 @@ function PostCard({ postObj, onUpdate }) {
     };
 
     fetchAuthorName();
-  }, [postObj.uid]);
+  }, [authorName, postObj.uid]);
 
   const handleVote = async (voteType) => {
     if (!userVoted || userVoted !== voteType) {
