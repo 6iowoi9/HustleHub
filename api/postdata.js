@@ -69,10 +69,23 @@ const getAllPost = () => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log('Data received:', data); // Log the data here
       resolve(Object.values(data));
     })
     .catch(reject);
+});
+
+const getPostsByUserId = (userId, firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/post/${firebaseKey}.json?orderBy="user_id"&equalTo="${userId}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch((error) => {
+      reject(error);
+    });
 });
 
 const getSinglePost = (firebaseKey) => new Promise((resolve, reject) => {
@@ -175,5 +188,5 @@ const updateComments = (firebaseKey, updatedReactionsCount) => new Promise((reso
     .catch((error) => reject(error.message));
 });
 export {
-  createPost, updatePost, getAllPost, deletePost, getSinglePost, reactions, updatereactions, getComments, createComment, updateComments,
+  createPost, updatePost, getAllPost, deletePost, getSinglePost, reactions, updatereactions, getComments, createComment, updateComments, getPostsByUserId,
 };

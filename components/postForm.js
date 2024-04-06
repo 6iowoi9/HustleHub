@@ -14,6 +14,8 @@ const initialState = {
   post_content: '',
   categories: '',
   reactions: 0,
+  price: '',
+  contact_info: '',
 };
 
 function PostForm({ obj }) {
@@ -113,6 +115,28 @@ function PostForm({ obj }) {
           name="post_content"
           value={formInput.post_content}
           onChange={handleChange}
+          style={{ height: '150px' }} // Set the height inline
+          required
+        />
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingInput-post_title" label="PRICE" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Asking Price"
+          name="price"
+          value={formInput.price}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+
+      <FloatingLabel controlId="floatingInput-post_title" label="CONTACT" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Contact Info"
+          name="contact_info"
+          value={formInput.contact_info}
+          onChange={handleChange}
           required
         />
       </FloatingLabel>
@@ -148,6 +172,8 @@ PostForm.propTypes = {
     created_on: PropTypes.string,
     post_content: PropTypes.string,
     categories: PropTypes.string,
+    price: PropTypes.string,
+    contact_info: PropTypes.string,
     uid: PropTypes.string,
     firebaseKey: PropTypes.string,
     downvotePost: PropTypes.number,

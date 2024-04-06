@@ -61,6 +61,26 @@ const getSingleUser = (firebaseKey) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getSingleUser2 = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/user/${firebaseKey}/uid.json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => resolve(data))
+    .catch((error) => {
+      console.error('Error fetching user data:', error.message);
+      reject(error);
+    });
+});
+
 // const fetchedUsersandPosts = (postFirebaseKey) => new Promise((resolve, reject) => {
 //   getSinglePost(postFirebaseKey.uid)
 //     .then((postObject) => {
@@ -89,5 +109,5 @@ const getSingleUser = (firebaseKey) => new Promise((resolve, reject) => {
 // });
 
 export {
-  registerUser, updateUser, getUsers, getSingleUser,
+  registerUser, updateUser, getUsers, getSingleUser, getSingleUser2,
 };

@@ -47,4 +47,9 @@ border-style: solid;
   background-color: darkgreen;
   border-color: black;
 
+  
+}
+.bigger-content-box {
+  height: 1500px; /* Adjust this value to make the content box taller */
+  resize: vertical; /* Allow vertical resizing */
 }

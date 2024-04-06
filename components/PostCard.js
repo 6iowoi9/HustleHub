@@ -121,6 +121,7 @@ function PostCard({ postObj, onUpdate }) {
           </Button>
         </Link>
 
+        <Card.Title>{postObj.post_title}</Card.Title> {/* Ensure that post_title is displayed */}
         <Card.Text>Created on: {postObj.created_on}</Card.Text>
         <Button
           variant="primary" // or any default variant
@@ -173,7 +174,7 @@ function PostCard({ postObj, onUpdate }) {
 PostCard.propTypes = {
   postObj: PropTypes.shape({
     image_url: PropTypes.string,
-    post_title: PropTypes.string,
+    post_title: PropTypes.string, // Ensure that post_title is included in propTypes
     user_name: PropTypes.string,
     id: PropTypes.number,
     created_on: PropTypes.string,

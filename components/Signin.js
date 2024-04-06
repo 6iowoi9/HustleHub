@@ -13,7 +13,7 @@ function Signin() {
         margin: '0 auto',
       }}
     >
-      <h1>Welcome to <br />💰HustleHub💵!</h1>
+      <h1>Welcome to <br /><img id="logo" src="/logo.png" alt="logo" style={{ width: '350px' }} />   </h1>
       <p>A freelance website</p>
       <Button type="button" size="lg" className="copy-btn" onClick={signIn}>
         Sign In
